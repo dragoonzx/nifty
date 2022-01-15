@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import { AbiItem } from "web3-utils";
 import SignableERC721 from "../abis/SignableERC721.json";
+import NiftyMemories from "../abis/NiftyMemories.json";
 import { store } from "../state";
 
 export const mintMemory = async () => {
@@ -12,19 +13,37 @@ export const mintMemory = async () => {
   const userAddress = store.user?.get("ethAddress");
 
   try {
+    const niftyMemoriesContract = new web3.eth.Contract(
+      NiftyMemories as AbiItem[],
+      contractAddress
+    );
+
+    let ercContractAddress = await niftyMemoriesContract.methods
+      .accounts(userAddress)
+      .call();
+
+    console.log(ercContractAddress);
+
+    if (ercContractAddress === "0x0000000000000000000000000000000000000000") {
+      ercContractAddress = await niftyMemoriesContract.methods
+        .createAccount()
+        .send({
+          from: userAddress,
+        });
+    }
+    console.log(ercContractAddress);
+
     const signableERC721Contract = new web3.eth.Contract(
       SignableERC721 as AbiItem[],
-      contractAddress,
+      ercContractAddress,
       {
         from: userAddress,
       }
     );
 
-    const tx = await signableERC721Contract.methods
-      .safeMintPublicSign("86400000")
-      .send({
-        from: userAddress,
-      });
+    const tx = await signableERC721Contract.methods.safeMintPublicSign(0).send({
+      from: userAddress,
+    });
 
     return tx;
   } catch (err) {

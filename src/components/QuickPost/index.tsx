@@ -50,29 +50,29 @@ const QuickPost = () => {
     setSaving(true);
     try {
       // Save file input to IPFS
-      // const data = acceptedFiles[0];
-      // const file = new Moralis.File(data.name, data);
+      const data = acceptedFiles[0];
+      const file = new Moralis.File(data.name, data);
 
-      // await file.saveIPFS();
-      // // @ts-expect-error
-      // console.log(file.ipfs(), file.hash());
-      // // Save file reference to Moralis
-      // const memoryInst = new Moralis.Object("Memories");
-      // memoryInst.set("creator", store.user?.get("ethAddress"));
-      // memoryInst.set("title", title);
-      // memoryInst.set("public", publicMemory);
-      // memoryInst.set("memory", file);
-      // // @ts-expect-error
-      // memoryInst.set("memoryHash", file.hash());
-      // // @ts-expect-error
-      // memoryInst.set("memoryIpfs", file.ipfs());
-      // // @ts-expect-error
-      // setMemoryHash(file.hash());
-      // await memoryInst.save();
-
+      await file.saveIPFS();
       // mint
       const x = await mintMemory();
       console.log(x);
+      // @ts-expect-error
+      console.log(file.ipfs(), file.hash());
+      // Save file reference to Moralis
+      const memoryInst = new Moralis.Object("Memories");
+      memoryInst.set("creator", store.user?.get("ethAddress"));
+      memoryInst.set("title", title);
+      memoryInst.set("public", publicMemory);
+      memoryInst.set("memory", file);
+      // @ts-expect-error
+      memoryInst.set("memoryHash", file.hash());
+      // @ts-expect-error
+      memoryInst.set("memoryIpfs", file.ipfs());
+      memoryInst.set("memoryContract", x.to);
+      // @ts-expect-error
+      setMemoryHash(file.hash());
+      await memoryInst.save();
     } catch (err) {
       console.error(err);
     } finally {

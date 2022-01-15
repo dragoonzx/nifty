@@ -14,8 +14,13 @@ module.exports = {
       80: "20rem",
       100: "25rem",
     },
+    width: {
+      60: "14rem",
+      160: "40rem",
+    },
     maxWidth: {
       120: "30rem",
+      140: "35rem",
       160: "40rem",
       200: "50rem",
     },
@@ -23,6 +28,16 @@ module.exports = {
   variants: {},
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["forest", "dark", "light"],
+    themes: [
+      {
+        mytheme: {
+          // custom theme
+          primary: "#2563eb",
+          "primary-focus": "#d43616",
+          "primary-content": "#ffffff",
+          // other colors
+        },
+      },
+    ],
   },
 };

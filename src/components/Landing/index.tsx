@@ -36,7 +36,7 @@ const Landing = () => {
         />
         <div
           className="max-w-160 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white/30 text-center backdrop-blur-sm rounded-md"
-          style={{ top: "calc(50% - 20px)" }}
+          style={{ top: "calc(50% - 14px)" }}
         >
           <div className="flex flex-col justify-center p-8 text-black">
             <h1 className="text-3xl font-bold rubik">Nifty Memories</h1>

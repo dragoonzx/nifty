@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { toast } from "react-toastify";
 import { useSnapshot } from "valtio";
 import avatarImg from "../../assets/images/avatar.png";
 import { store } from "../../state";
@@ -10,6 +11,7 @@ const Post = ({
     creator: string;
     title: string;
     img: string;
+    signers: number;
   };
 }) => {
   // const storeSnap = useSnapshot(store);
@@ -22,8 +24,8 @@ const Post = ({
 
   return (
     <div className="flex max-w-sm max-w-140 my-10 bg-white shadow-md border-black border rounded-lg overflow-hidden mx-auto">
-      <div className="flex items-center w-full">
-        <div className="w-full">
+      <div className="flex items-center w-full" style={{ minWidth: "100%" }}>
+        <div className="w-full" style={{ width: "100%" }}>
           <div className="flex justify-between px-2 py-3">
             <div className="flex">
               <div className="w-auto h-auto rounded-full border-2">
@@ -41,9 +43,9 @@ const Post = ({
                   </span>
                 </div>
                 <div className="flex w-full mt-1">
-                  <div className="text-primary font-base text-xs mr-1">
-                    Memory
-                  </div>
+                  <span className="text-primary font-base text-xs mr-1">
+                    NFTM
+                  </span>
                   <div className="text-gray-400 font-thin text-xs">
                     • 30 seconds ago
                   </div>
@@ -51,9 +53,9 @@ const Post = ({
               </div>
             </div>
             <div className="px-4 border-l-2 border-black -mt-3 -mb-3">
-              <div className="mt-3">
+              <div className="mt-3 text-center">
                 <span className="text-xs">Signers</span>
-                <div></div>
+                <div>{data.signers}</div>
               </div>
             </div>
           </div>
@@ -65,9 +67,9 @@ const Post = ({
             {data.title}
           </div>
           <div className="text-gray-500 font-thin text-sm mb-6 mx-3 px-2">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+            {/* Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500
+            ever since the 1500 */}
           </div>
           {/* <div className="flex justify-start mb-4 border-t border-gray-100">
             <div className="flex w-full mt-1 pt-2 pl-5">

@@ -8,8 +8,9 @@ import { Link } from "react-router-dom";
 import paint from "../../assets/images/paint.jpeg";
 import congrats from "../../assets/images/congrats.png";
 import { mintMemory } from "../../utils/mintMemory";
+import { toast } from "react-toastify";
 
-const QuickPost = () => {
+const QuickPost = ({ onPostPublish }: { onPostPublish?: () => void }) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     multiple: false,
   });
@@ -18,8 +19,17 @@ const QuickPost = () => {
   const [isMemorized, setIsMemorized] = useState(false);
 
   const closeModal = () => {
+    setSaving(false);
+    setTitle("");
+    setPublicMemory(true);
+    acceptedFiles.splice(0, 1);
+    setSignersList("");
+
     setIsOpen(false);
-    setIsMemorized(false);
+
+    setTimeout(() => {
+      setIsMemorized(false);
+    }, 100);
   };
 
   const openModal = () => {
@@ -55,7 +65,7 @@ const QuickPost = () => {
 
       await file.saveIPFS();
       // mint
-      const x = await mintMemory();
+      const x = await mintMemory(signersList);
       console.log(x);
       // @ts-expect-error
       console.log(file.ipfs(), file.hash());
@@ -69,23 +79,29 @@ const QuickPost = () => {
       memoryInst.set("memoryHash", file.hash());
       // @ts-expect-error
       memoryInst.set("memoryIpfs", file.ipfs());
-      memoryInst.set("memoryContract", x.to);
+      memoryInst.set("memoryToken", x.events?.Transfer?.returnValues?.tokenId);
       // @ts-expect-error
       setMemoryHash(file.hash());
       await memoryInst.save();
+
+      setIsMemorized(true);
+      toast.success("Successfully minted memory");
+      onPostPublish && onPostPublish();
     } catch (err) {
       console.error(err);
-    } finally {
-      setSaving(false);
-      setTitle("");
-      setPublicMemory(true);
-      acceptedFiles.splice(0, 1);
-      setIsMemorized(true);
+      toast.error("Something went wrong");
     }
   };
 
+  const [signersList, setSignersList] = useState("");
+
+  const handleSignersList = (e: React.SyntheticEvent) => {
+    const value = (e.target as HTMLInputElement).value;
+    setSignersList(value);
+  };
+
   const files = acceptedFiles.map((file: any) => (
-    <li key={file.path}>
+    <li key={file.path} className="text-xs">
       {file.path} - {file.size} bytes
     </li>
   ));
@@ -142,11 +158,11 @@ const QuickPost = () => {
                           Title
                         </label>
                         <input
-                          className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                          className="input input-bordered"
                           type=""
                           value={title}
                           onChange={handleTitleChange}
-                          placeholder="My cat <3"
+                          placeholder="My pepe cat"
                         />
                       </div>
                       <div className="grid grid-cols-1 space-y-2">
@@ -169,9 +185,9 @@ const QuickPost = () => {
                                 stroke="currentColor"
                               >
                                 <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
                                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                                 />
                               </svg>
@@ -195,7 +211,7 @@ const QuickPost = () => {
                           </div>
                         </div>
                       </div>
-                      <ul style={{ maxWidth: "300px" }}>{files}</ul>
+                      <ul style={{ maxWidth: "300px", margin: 0 }}>{files}</ul>
                       <p className="text-sm text-gray-300">
                         <span>File type: any type you imagine</span>
                       </p>
@@ -208,13 +224,31 @@ const QuickPost = () => {
                         />
                         Public memory
                       </label>
-                      <p className="text-sm text-gray-600">
-                        Quick memories allowed to sign by url only
-                      </p>
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text text-sm text-gray-600">
+                            Signers list* (addresses separated by a comma)
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          value={signersList}
+                          onChange={handleSignersList}
+                          placeholder="0x00000000..."
+                          className="input input-bordered"
+                        />
+                        <span
+                          className="text-xs mt-1"
+                          style={{ maxWidth: "400px" }}
+                        >
+                          * you can leave the field blank, then the signature
+                          will be by the link
+                        </span>
+                      </div>
                     </form>
                   </div>
 
-                  <div className="mt-4">
+                  <div className="mt-4 flex items-center">
                     <button
                       type="button"
                       className={classNames(
@@ -225,6 +259,12 @@ const QuickPost = () => {
                     >
                       Create memory
                     </button>
+                    <span
+                      className="ml-4 text-xs"
+                      style={{ maxWidth: "250px" }}
+                    >
+                      Your memory will be minted on Polygon blockchain
+                    </span>
                   </div>
                 </div>
               ) : (
@@ -239,7 +279,7 @@ const QuickPost = () => {
                     <img src={congrats} className="h-32 mx-auto" alt="" />
                     <p>You created and minted your memory!</p>
                     <p>
-                      Share it with others, copy this link:{" "}
+                      Share it with those you want to share, copy this link:{" "}
                       <code>
                         <Link
                           className="link link-primary text-xs"
@@ -249,9 +289,13 @@ const QuickPost = () => {
                         </Link>
                       </code>
                     </p>
-                    <p>so they can sign it and hold this memory too</p>
                     <p>
-                      or you can find it in your{" "}
+                      they have{" "}
+                      <span className="font-bold">1 day deadline</span> to sign
+                      it
+                    </p>
+                    <p>
+                      and you can find your minted memory in{" "}
                       <Link className="link link-primary" to="/app/memory">
                         memories
                       </Link>

@@ -4,6 +4,9 @@ import App from "../App";
 import Landing from "../Landing";
 import MemoryHash from "../MemoryHash";
 import MemoryList from "../MemoryList";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const Loading = () => (
   <p className="p-4 w-full h-full text-center">Loading...</p>
@@ -19,6 +22,7 @@ export const Router = () => {
           <Route path="/app" exact component={App} />
           <Route path="/" exact component={Landing} />
         </Switch>
+        <ToastContainer position="bottom-right" />
       </Suspense>
     </BrowserRouter>
   );

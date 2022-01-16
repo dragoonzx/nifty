@@ -64,23 +64,24 @@ const QuickPost = ({ onPostPublish }: { onPostPublish?: () => void }) => {
 
       await file.saveIPFS();
       // mint
-      const x = await mintMemory(signersList);
-      console.log(x);
       // @ts-expect-error
-      console.log(file.ipfs(), file.hash());
+      const ipfsFile = file.ipfs();
+      // @ts-expect-error
+      const hashFile = file.hash();
+      const x = await mintMemory(signersList, ipfsFile);
+      console.log(x);
+      console.log(ipfsFile, hashFile);
       // Save file reference to Moralis
       const memoryInst = new Moralis.Object("Memories");
       memoryInst.set("creator", store.user?.get("ethAddress"));
       memoryInst.set("title", title);
       memoryInst.set("public", publicMemory);
       memoryInst.set("memory", file);
-      // @ts-expect-error
-      memoryInst.set("memoryHash", file.hash());
-      // @ts-expect-error
-      memoryInst.set("memoryIpfs", file.ipfs());
+      memoryInst.set("memoryHash", hashFile);
+      memoryInst.set("memoryIpfs", ipfsFile);
       memoryInst.set("memoryToken", x.events?.Transfer?.returnValues?.tokenId);
-      // @ts-expect-error
-      setMemoryHash(file.hash());
+
+      setMemoryHash(hashFile);
       await memoryInst.save();
 
       setIsMemorized(true);

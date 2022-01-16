@@ -33,7 +33,7 @@ const AppHeader = ({
   return (
     <div className="bg-white/30 text-center backdrop-blur-sm sticky top-0">
       <div className="flex items-center justify-between px-10 pt-6 pb-2">
-        <Link to="/">
+        <Link to="/app">
           <img className="h-16" src={logo} alt="" />
         </Link>
         {main && onFeedChange && (

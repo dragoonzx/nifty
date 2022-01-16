@@ -4,6 +4,7 @@ import AppHeader from "../AppHeader";
 import Moralis from "moralis";
 import { store } from "../../state";
 import { useSnapshot } from "valtio";
+import { Link } from "react-router-dom";
 
 const MemoryList = () => {
   const { isInitializing, isInitialized } = useMoralis();
@@ -36,6 +37,7 @@ const MemoryList = () => {
             img: res.get("memoryIpfs"),
             title: res.get("title"),
             public: res.get("public"),
+            hash: res.get("memoryHash"),
             signees: signees ?? [],
           };
         })
@@ -52,6 +54,7 @@ const MemoryList = () => {
               img: res.get("memoryIpfs"),
               title: res.get("title"),
               public: res.get("public"),
+              hash: res.get("memoryHash"),
               signees: signees,
             };
           } else {
@@ -74,13 +77,16 @@ const MemoryList = () => {
         <div className="flex flex-wrap -m-4 mt-8">
           {memories.map((post: any, id: number) => (
             <div key={id} className="lg:w-1/4 p-4 w-1/2">
-              <a className="block relative h-48 rounded overflow-hidden">
+              <Link
+                to={`/app/memory/${post.hash}`}
+                className="block relative h-48 rounded overflow-hidden"
+              >
                 <img
                   alt=""
                   className="object-cover object-center w-full h-full block"
                   src={post.img}
                 />
-              </a>
+              </Link>
               <div className="mt-4">
                 <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
                   {post.public ? "public" : "signers only"} ‧
@@ -112,13 +118,16 @@ const MemoryList = () => {
         <div className="flex flex-wrap -m-4 mt-8">
           {signedMemories.map((post: any, id: number) => (
             <div key={id} className="lg:w-1/4 p-4 w-1/2">
-              <a className="block relative h-48 rounded overflow-hidden">
+              <Link
+                to={`/app/memory/${post.hash}`}
+                className="block relative h-48 rounded overflow-hidden"
+              >
                 <img
                   alt=""
                   className="object-cover object-center w-full h-full block"
                   src={post.img}
                 />
-              </a>
+              </Link>
               <div className="mt-4">
                 <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
                   {post.public ? "public" : "signers only"} ‧{" "}

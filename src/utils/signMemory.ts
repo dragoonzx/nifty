@@ -6,7 +6,7 @@ import { store } from "../state";
 import { toast } from "react-toastify";
 
 export const signMemory = async (creatorAddr: string, memoryToken: string) => {
-  const contractAddress = "0x1Dd72f9BB1cf05a6F421B31990773fA5aCd6AD51";
+  const contractAddress = "0x419d0293855B3668417D4093DAD2822D9C5031d0";
 
   //@ts-expect-error
   const provider = window.ethereum;

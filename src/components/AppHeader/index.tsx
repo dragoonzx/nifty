@@ -7,6 +7,7 @@ import { store } from "../../state";
 import avatarImg from "../../assets/images/avatar.png";
 import polygon from "../../assets/images/polygon.svg";
 import crown from "../../assets/images/crown.svg";
+import SignInWithCeramic from "../SignInWithCeramic";
 
 // const tabStyle = {
 //   maxWidth: "600px",
@@ -108,7 +109,7 @@ const AppHeader = ({
                   <a>Friends</a>
                 </li>
                 <li>
-                  <a>Edit</a>
+                  <SignInWithCeramic />
                 </li>
                 <li>
                   <a>Logout</a>

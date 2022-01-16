@@ -21,7 +21,7 @@ interface IPostData {
 
 const MemoryHash = () => {
   const storeSnap = useSnapshot(store);
-  const { isInitializing, isInitialized } = useMoralis();
+  const { isInitializing, isInitialized, authenticate } = useMoralis();
   const { hash } = useParams<{ hash: string }>();
 
   const [postData, setPostData] = useState<IPostData>({
@@ -108,7 +108,9 @@ const MemoryHash = () => {
         ) : !storeSnap.user ? (
           <>
             <p className="mt-2">You should connect wallet to sign memory</p>
-            <button className="btn my-2">Connect wallet</button>
+            <button onClick={() => authenticate()} className="btn my-2">
+              Connect wallet
+            </button>
             <p>or you can see instructions how to do this:</p>
             <p>
               <a href="https://metamask.io/" className="link" target="_blank">

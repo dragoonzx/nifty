@@ -58,7 +58,7 @@ const MemoryHash = () => {
     retrieveMemory();
   }, [isInitialized]);
 
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
 
   const signMemoryHash = async () => {
     if (!store.user) {

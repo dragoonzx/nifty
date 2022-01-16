@@ -20,6 +20,8 @@
 
 # Set up
 
+You need to create Moralis server and add to env
+
 ```shell
 mv .env.example .env
 yarn

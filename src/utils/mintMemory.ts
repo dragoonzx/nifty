@@ -22,17 +22,21 @@ export const mintMemory = async (signersList: string) => {
       NiftyMemories as AbiItem[],
       contractAddress
     );
+    console.log(userAddress);
 
     let ercContractAddress = await niftyMemoriesContract.methods
       .accounts(userAddress)
       .call();
 
+    console.log(ercContractAddress);
+
     if (ercContractAddress === "0x0000000000000000000000000000000000000000") {
+      await niftyMemoriesContract.methods.createAccount().send({
+        from: userAddress,
+      });
       ercContractAddress = await niftyMemoriesContract.methods
-        .createAccount()
-        .send({
-          from: userAddress,
-        });
+        .accounts(userAddress)
+        .call();
     }
 
     const signableERC721Contract = new web3.eth.Contract(

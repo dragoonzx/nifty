@@ -19,7 +19,6 @@ const QuickPost = ({ onPostPublish }: { onPostPublish?: () => void }) => {
   const [isMemorized, setIsMemorized] = useState(false);
 
   const closeModal = () => {
-    setSaving(false);
     setTitle("");
     setPublicMemory(true);
     acceptedFiles.splice(0, 1);
@@ -90,6 +89,8 @@ const QuickPost = ({ onPostPublish }: { onPostPublish?: () => void }) => {
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong");
+    } finally {
+      setSaving(false);
     }
   };
 

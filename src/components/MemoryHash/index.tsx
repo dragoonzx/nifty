@@ -11,17 +11,25 @@ import { NetworkAlert } from "../NetworkAlert/NetworkAlert";
 import { toast } from "react-toastify";
 import successImg from "../../assets/images/congrats.png";
 
+interface IPostData {
+  creator: string;
+  title: string;
+  img: string;
+  tokenId: string;
+  signers: string[];
+}
+
 const MemoryHash = () => {
   const storeSnap = useSnapshot(store);
   const { isInitializing, isInitialized } = useMoralis();
   const { hash } = useParams<{ hash: string }>();
 
-  const [postData, setPostData] = useState({
+  const [postData, setPostData] = useState<IPostData>({
     creator: "",
     title: "",
     img: "",
     tokenId: "",
-    signers: 0,
+    signers: [],
   });
 
   useEffect(() => {
@@ -37,7 +45,7 @@ const MemoryHash = () => {
       const title = memory.get("title");
       const img = memory.get("memoryIpfs");
       const tokenId = memory.get("memoryToken");
-      const signers = memory.get("signees")?.length ?? 0;
+      const signers = memory.get("signees") ?? [];
       setPostData({
         creator,
         title,

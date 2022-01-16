@@ -11,7 +11,7 @@ const Post = ({
     creator: string;
     title: string;
     img: string;
-    signers: number;
+    signers: string[];
   };
 }) => {
   // const storeSnap = useSnapshot(store);
@@ -53,9 +53,29 @@ const Post = ({
               </div>
             </div>
             <div className="px-4 border-l-2 border-black -mt-3 -mb-3">
-              <div className="mt-3 text-center">
+              <div className="mt-2 text-center">
                 <span className="text-xs">Signers</span>
-                <div>{data.signers}</div>
+                <div>
+                  {data.signers.length > 0 ? (
+                    <div className="dropdown dropdown-end">
+                      <div tabIndex={0} className="btn btn-sm">
+                        {data.signers.length}
+                      </div>
+                      <ul
+                        tabIndex={0}
+                        className="p-2 shadow menu dropdown-content bg-primary text-white mt-1 rounded-box w-52"
+                      >
+                        {data.signers.map((signer) => (
+                          <li>
+                            <span>{signer}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    0
+                  )}
+                </div>
               </div>
             </div>
           </div>

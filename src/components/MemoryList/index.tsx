@@ -36,7 +36,7 @@ const MemoryList = () => {
             img: res.get("memoryIpfs"),
             title: res.get("title"),
             public: res.get("public"),
-            signees: signees?.length ?? 0,
+            signees: signees ?? [],
           };
         })
         .filter(Boolean);
@@ -52,7 +52,7 @@ const MemoryList = () => {
               img: res.get("memoryIpfs"),
               title: res.get("title"),
               public: res.get("public"),
-              signees: signees.length,
+              signees: signees,
             };
           } else {
             return null;
@@ -83,8 +83,22 @@ const MemoryList = () => {
               </a>
               <div className="mt-4">
                 <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                  {post.public ? "public" : "signers only"} ‧ {post.signees}{" "}
-                  signers
+                  {post.public ? "public" : "signers only"} ‧
+                  <div className="dropdown">
+                    <a tabIndex={0} className="link link-primary">
+                      {post.signees.length} signers
+                    </a>
+                    <ul
+                      tabIndex={0}
+                      className="p-2 shadow menu dropdown-content bg-primary text-white rounded-box w-52"
+                    >
+                      {post.signees.map((v: string, i: number) => (
+                        <li key={i}>
+                          <span>{v}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </h3>
                 <h2 className="text-gray-900 title-font text-lg font-medium">
                   {post.title}
@@ -107,8 +121,22 @@ const MemoryList = () => {
               </a>
               <div className="mt-4">
                 <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                  {post.public ? "public" : "signers only"} ‧ {post.signees}{" "}
-                  signers
+                  {post.public ? "public" : "signers only"} ‧{" "}
+                  <div className="dropdown">
+                    <a tabIndex={0} className="link link-primary">
+                      {post.signees.length} signers
+                    </a>
+                    <ul
+                      tabIndex={0}
+                      className="p-2 shadow menu dropdown-content text-white bg-primary rounded-box w-52"
+                    >
+                      {post.signees.map((v: string, i: number) => (
+                        <li key={i}>
+                          <span>{v}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </h3>
                 <h2 className="text-gray-900 title-font text-lg font-medium">
                   {post.title}

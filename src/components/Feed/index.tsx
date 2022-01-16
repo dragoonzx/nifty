@@ -31,7 +31,7 @@ const Feed = ({ feedType = "main" }: { feedType?: string }) => {
           img: res.get("memoryIpfs"),
           title: res.get("title"),
           public: res.get("public"),
-          signers: res.get("signees")?.length ?? 0,
+          signers: res.get("signees") ?? [],
         };
       })
       .reverse();

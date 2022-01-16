@@ -1,4 +1,4 @@
-<img src="./src/assets/images/logo.svg" width="150" align="right" alt="" />
+<img src="./src/assets/images/congrats.png" width="150" align="right" alt="" />
 
 # Nifty Memories UI
 
